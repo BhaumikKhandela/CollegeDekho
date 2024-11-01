@@ -1,0 +1,218 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model Field{
+  id Int @id @default(autoincrement())
+  name String
+  colleges College[]
+
+}
+model College{
+  id Int  @id @default(autoincrement())
+  name String
+  location String
+  state String @default("Unknown State")
+  city String @default("Unknown City")
+  description String
+  ownership String @default("public/Government")
+  founded String
+  logo String @default("")
+  image String[]
+  collegeWebsiteLink String @default("https://www.google.com")
+  fieldId Int
+  field Field @relation(fields: [fieldId], references: [id])
+  metatitle String? @default("title")
+  metadescription String? @default("description")
+  metakeywords String? @default("keywords")
+  metablogURL String? @default("/college")
+  ogTitle String?
+  ogDescription String?
+  ogImage String?
+  ogURL String?
+  ogType String?
+  ogSiteName String?
+  ogLocale String?
+  twitterCard String?
+  twitterTitle String?
+  twitterDescription String?
+  twitterImage String?
+  twitterSite String?
+  twitterCreator String?
+  pinterestImage String?
+  pinterestImageAltText String?
+  pinterestDescription String?
+  canonicalURL String?
+  robots String?
+  schemaMarkup String?
+  lastModified DateTime? // For seo purpose
+  courses Course[]
+  admission Admission[]
+  hostelFess HostelFees[]
+  faqs Faqs[]
+  ranking Ranking[]
+}
+
+model Course{
+  id Int @id @default(autoincrement())
+  name String
+  duration String
+  fees Int
+  seats Int
+  cutoff Int
+  collegeId Int
+  college College @relation(fields: [collegeId], references: [id])
+  placement Placements[]
+  admission CourseAdmission[]
+  
+  
+}
+
+model Admission{
+  id Int @id @default(autoincrement())
+  collegeId Int
+  college College @relation(fields: [collegeId], references: [id])
+  requirement String[]
+}
+
+model HostelFees{
+  id Int @id @default(autoincrement())
+  type String
+  amount Int
+  collegeId Int
+  college College @relation(fields: [collegeId], references: [id])
+}
+model Faqs{
+  id Int @id @default(autoincrement())
+  question String
+  answer String
+  collegeId Int?
+  
+  college College? @relation(fields: [collegeId], references: [id])
+  
+}
+model Placements{
+  id Int @id @default(autoincrement())
+  year Int
+  averagePackage String @default("Data not available")
+  medianPackage String @default("Data not available")
+  heighestPackage String  @default("Data not available")
+  courseId Int
+  course Course @relation(fields: [courseId],references: [id])
+}
+model Ranking{
+  id Int @id @default(autoincrement())
+  basedOn String
+  Rank String @default("Data not available")
+  collegeId Int
+  college College @relation(fields: [collegeId],references: [id])
+}
+model Admin {
+  id Int @id @default(autoincrement())
+  username String
+  password String
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  firstName String
+  lastName String
+  email String 
+  username String @unique 
+  password String
+  mobileNumber String
+  city String
+  state String
+  interestedIn String
+}
+
+model CourseAdmission{
+  id Int @id @default(autoincrement())
+  courseId Int
+  course Course @relation(fields: [courseId],references: [id])
+  requirement String[]
+}
+
+
+model Blog{
+  id Int @id @default(autoincrement())
+  title String 
+  author String
+  image String[]
+  metatitle String
+  metadescription String
+  metakeywords String
+  blogURL String // slug
+  htmlContent String
+  published Boolean
+  ogTitle String?
+  ogDescription String?
+  ogImage String?
+  ogURL String?
+  ogType String?
+  ogSiteName String?
+  ogLocale String?
+  twitterCard String?
+  twitterTitle String?
+  twitterDescription String?
+  twitterImage String?
+  twitterSite String?
+  twitterCreator String?
+  pinterestImage String?
+  pinterestImageAltText String?
+  pinterestDescription String?
+  canonicalURL String?
+  robots String?
+  schemaMarkup String?
+  lastModified DateTime? // For seo purpose
+  created DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Email{
+  id Int @id @default(autoincrement())
+  email String
+}
+
+model Pages_Meta_Tags{
+  id Int @id @default(autoincrement())
+  page String @unique
+  slug String @unique
+  title String
+  description String
+  ogTitle String?
+  ogDescription String?
+  ogImage String?
+  ogAltImageText String?
+  ogURL String?
+  ogType String?
+  ogLocale String?
+  ogSiteName String?
+  twitterCard String?
+  twitterTitle String?
+  twitterDescription String?
+  twitterImage String?
+  twitterImageAltText String?
+  twitterSite String?
+  twitterCreator String?
+  pinterestImage String?
+  pinterestImageAltText String?
+  pinterestDescription String?
+  canonicalURL String?
+  robots String?
+  keywords String?
+  lastModified DateTime? // Last modified timestamp for SEO purposes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}

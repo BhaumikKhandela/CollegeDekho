@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "College" ADD COLUMN     "city" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "state" TEXT NOT NULL DEFAULT '';
